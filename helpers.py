@@ -30,3 +30,10 @@ def test_sort(name, sort_func, arr):
 
 def print_list(array):
     print(" ".join([str(ele) for ele in array]))
+
+def print_tree(arr):
+    n = len(arr)
+    i = 1
+    while i < n:
+        print(arr[i:i**2])
+        i = i**2 

@@ -36,20 +36,34 @@ def __merge_sort(arr, l, r):
         __merge(arr, l, r, mid)
 
 def merge_sort(array):
-    """Insertion Sort sort array inplace."""
+    """Merge Sort sort array inplace."""
     n = len(array)
     __merge_sort(array, 0, n-1)
 
+def merge_sort_BU(array):
+    """Merge Sort sort array inplace from bottom up."""
+    n = len(array)
+    size = 1
+    while size <= n:
+        i = 0
+        while i+size < n:
+            if array[i+size-1] > array[i+size]: #We can use insertion sort to sort short list, however the speed will slower
+                __merge(array, i, min(i+size+size-1, n-1), i+size-1)
+            i += 2*size
+        size += size
+
 if __name__ == "__main__":
-    n = 100000
+    n = 10000
     test_arr = generate_random_Intlist(n, 0, 1000)
     # test_arr = generate_nearly_odered(n, 10)
-    # cp_arr = test_arr.copy()
+    cp_arr = test_arr.copy()
     # print_list(test_arr)
     # selection_sort(test)
     # test_sort("Insertion Sort", insertion_sort, cp_arr)
     test_sort("Merge Sort", merge_sort, test_arr)
+    test_sort("Merge Sort BU", merge_sort_BU, cp_arr)
     # test_sort("Selection Sort", selection_sort, test_arr)
 
     # print("After Sort:") 
     # print_list(test_arr)
+    # print_list(cp_arr)
