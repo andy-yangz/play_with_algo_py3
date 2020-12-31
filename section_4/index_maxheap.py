@@ -1,5 +1,12 @@
 import random
 
+def print_tree(arr):
+    n = len(arr)
+    i = 1
+    while i < n:
+        print(arr[i:i*2])
+        i = i*2 
+
 class IndexMaxHeap:
     """
     Index Max Heap data structure.
@@ -13,6 +20,8 @@ class IndexMaxHeap:
             self.capacity = capacity
         else:
             self.data = [None] + arr
+            self.indexs = [None] + list(range(1, capacity+1))
+            self.reverse = [0] + list(range(1, capacity+1))
             self.count = len(arr)
             self.capacity = capacity
             #Heapify
@@ -56,6 +65,17 @@ class IndexMaxHeap:
         self.reverse[i] = self.count+1
         self.count += 1
         self.shift_up(self.count)
+    
+    # Insert empty in self.data
+    def insert_ele(self, ele):
+        for i in range(1, self.capacity+1):
+            if self.reverse[i] == 0:
+                self.data[i] = ele
+                self.indexs[self.count+1] = i
+                self.reverse[i] = self.count+1
+                self.count += 1
+                self.shift_up(self.count)
+                break
 
     def extract_max(self):
         assert self.count>0
@@ -97,19 +117,36 @@ class IndexMaxHeap:
         j = self.reverse[i]
         self.shift_up(j)
         self.shift_down(j)
+    
+    def remove(self, i):
+        # Remove an element
+        if self.contain(i):
+            i += 1
+            self.data[self.indexs[i]] = None
+            self.indexs[i], self.indexs[self.count] = self.indexs[self.count], self.indexs[i]
+            self.reverse[self.indexs[i]] = i
+            self.reverse[self.indexs[self.count]] = 0
+            self.count -= 1
+            self.shift_up(i)
+            self.shift_down(i)
+        else: # if not contain return directly
+            return
 
 
 if __name__ == "__main__":
-    imaxheap = IndexMaxHeap(50)
+    # imaxheap = IndexMaxHeap(50)
     nums = []
     for i in range(30):
         ele = random.randint(0, 100)
-        imaxheap.insert(i, ele)
+        # imaxheap.insert(i, ele)
         nums.append(ele)
+    imaxheap = IndexMaxHeap(30, nums)
     # print("Data: ", nums)
-    # print_tree(maxheap.data)
+    # print_tree(imaxheap.data)
     # while (not imaxheap.is_empty()):
-    #     print(imaxheap.extract_max())
+    #     index = imaxheap.extract_max_index()
+    #     print("Index: ", index)
+    #     print(nums[index])
     print(imaxheap.extract_max())
     print(imaxheap.extract_max())
     print(imaxheap.indexs)
@@ -117,5 +154,5 @@ if __name__ == "__main__":
     imaxheap.change(3, 101)
     print(imaxheap.indexs)
     print(imaxheap.reverse)
-    # print(imaxheap.data)
+    print(imaxheap.data)
     # print(imaxheap.count)
