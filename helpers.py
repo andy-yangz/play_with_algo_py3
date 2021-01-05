@@ -1,6 +1,18 @@
 import random
 import time
 
+class Node:
+    def __init__(self, k, v):
+        self.key = k
+        self.value = v
+        self.left = None
+        self.right = None
+        self.count = 1
+        self.dups = 1 # Duplicates
+    
+    def __str__(self):
+        return f"Key: {self.key}, Value: {self.value}"
+
 def generate_random_Intlist(n, range_L, range_R):
     result = []
     for _ in range(n):
